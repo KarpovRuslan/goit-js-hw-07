@@ -6,7 +6,7 @@ const cardsMarkup = createGalleryItemsMarkup(galleryItems);
 
 imageContainer.insertAdjacentHTML('beforeend', cardsMarkup);
 
-imageContainer.addEventListener('click', onImageCardClick);
+
 
 function createGalleryItemsMarkup(galleryItems) {
     return galleryItems  
@@ -14,7 +14,7 @@ function createGalleryItemsMarkup(galleryItems) {
     .map(({ preview, original, description }) => {
         return `
         <div class="gallery__item">
-        <a class="gallery__link" href="${original}">
+        <a class="gallery__link" href="${original.value}">
          <img
             class="gallery__image"
             src="${preview}"
@@ -27,11 +27,14 @@ function createGalleryItemsMarkup(galleryItems) {
         .join('');
 }
 
-function onImageCardClick(event) {
-    if (!event.target.classList.contains('gallery__item')) {
-        return;
-    }
-     console.log(event.target)
-}
+function onImageCardClick (event) {
+    event.preventDefault();
+    const source = event.target.dataset.source;
+    console.log(source)
+    const instance = basicLightbox.create(`<img src="${source}" width="800" height="600">`)
+    instance.show();
+};
+
+imageContainer.addEventListener('click', onImageCardClick);
 
 
