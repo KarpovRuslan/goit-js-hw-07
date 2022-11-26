@@ -6,7 +6,7 @@ const cardsMarkup = createGalleryItemsMarkup(galleryItems);
 
 imageContainer.insertAdjacentHTML('beforeend', cardsMarkup);
 
-
+imageContainer.addEventListener('click', onImageCardClick);
 
 function createGalleryItemsMarkup(galleryItems) {
     return galleryItems  
@@ -29,12 +29,25 @@ function createGalleryItemsMarkup(galleryItems) {
 
 function onImageCardClick (event) {
     event.preventDefault();
-    const source = event.target.dataset.source;
-    console.log(source)
-    const instance = basicLightbox.create(`<img src="${source}" width="800" height="600">`)
+
+    if (event.target.nodeName !== 'IMG') {
+        return;
+    }
+
+    const instance = basicLightbox.create(`<img src="${event.target.dataset.source}" width="800" height="600">`)
     instance.show();
+
+    const onKeydownEscape = event => {
+        console.log(event.code);
+        if (event.code === 'Escape') {
+            instance.close();
+        }
+    };
+    window.addEventListener('keydown', onKeydownEscape);
 };
 
-imageContainer.addEventListener('click', onImageCardClick);
+
+
+
 
 
